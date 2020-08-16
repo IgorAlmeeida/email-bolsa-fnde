@@ -1,0 +1,5 @@
+const val END_POINT: String = "https://www.fnde.gov.br/digef/rs/spba/publica/"
+
+pagamento/{hash}
+
+pessoa/1/10/{cpf}
