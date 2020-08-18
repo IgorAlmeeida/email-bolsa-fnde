@@ -1,14 +1,19 @@
 <?php
 
-	// Conexao ao banco de dados
+function get_conexao(){
+	$dsn = 'mysql:host=pet-bolsa-email.c88nbyo6r5kw.us-east-1.rds.amazonaws.com;dbname=bolsa_email_pet';
+	$user = 'criador';
+	$pass = 'superpetuag123';
 
-	define( 'MYSQL_HOST', 'pet-bolsa-email.c88nbyo6r5kw.us-east-1.rds.amazonaws.com' );
-	define( 'MYSQL_USER', 'admin' );
-	define( 'MYSQL_PASSWORD', 'igor12345678' );
-	define( 'MYSQL_DB_NAME', 'bolsa_email_pet' );
+	try{
+		$pdo = new PDO($dsn, $user, $pass);
+		return $pdo;
+	} catch (PDOException $e){
+		echo ("Error: ".$e->getMessage());
+	}
+}
 
-	new PDO( 'mysql:host=' . MYSQL_HOST . ' port=3306 dbname=' . MYSQL_DB_NAME, MYSQL_USER, MYSQL_PASSWORD);
-	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 
 	
 ?>
