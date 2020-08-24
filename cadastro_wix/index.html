@@ -1,7 +1,7 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="index.js"></script>
+
 <!------ Include the above in your HEAD tag ---------->
 
 <!DOCTYPE html>
@@ -29,7 +29,7 @@
 </div>
     -->
 <div class="col-md-11 control-label">
-        <p class="help-block"><h11>*</h11> Campo Obrigatório </p>
+    <p class="help-block"><h11>*</h11> Campo Obrigatório </p>
 </div>
 </div>
 
@@ -37,7 +37,7 @@
 <div class="form-group">
   <label class="col-md-2 control-label" for="Nome">Nome <h11>*</h11></label>  
   <div class="col-md-8">
-  <input id="Nome" name="Nome" placeholder="" class="form-control input-md" required="" type="text">
+  <input id="nome" name="Nome" placeholder="" class="form-control input-md" required="" type="text">
   </div>
 </div>
 
@@ -55,19 +55,10 @@
   <div class="col-md-5">
     <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-      <input id="prependedtext" name="prependedtext" class="form-control" placeholder="email@email.com" required="" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
+      <input id="email" name="prependedtext" class="form-control" placeholder="email@email.com" required="" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" >
     </div>
   </div>
 </div>
-
-
-<!-- Search input-->
-
-<!-- Prepended text-->
-
-<!-- Select Basic -->
-
-<!-- Select Basic -->
  
  <!-- Text input-->
 
@@ -75,7 +66,7 @@
 <div class="form-group">
   <label class="col-md-2 control-label" for="Cadastrar"></label>
   <div class="col-md-8">
-    <button id="Cadastrar" name="Cadastrar" class="btn btn-success" onclick="cadastrar();">Cadastrar </button>
+    <button id="Cadastrar" name="Cadastrar" class="btn btn-success">Cadastrar</button>
     <button id="Cancelar" name="Cancelar" class="btn btn-danger" type="Reset">Cancelar</button>
   </div>
 </div>
@@ -83,9 +74,38 @@
 </div>
 </div>
 
-
 </fieldset>
 </form>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script>
+	$("#Cadastrar").click(function(e){
+		e.preventDefault();
+		let nome1 = $("#nome").val();
+		let cpf1 = $("#cpf").val();
+		let email1 = $("#email").val();
+		console.log("foi");
 
+    $.ajax({
+        url: "https://petbolsa.000webhostapp.com/usuario.php",
+        data: {
+          nome: nome1,
+          cpf: cpf1,
+          email: email1,
+        },
+        dataType: "json",
+        type: "POST",
+        success: function (json) {
+        for (let i = 0; i < json.length; i++){  
+          alert(json[i].mensagem);
+          console.log(json);
+        } 
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          console.log("ERROR DE ESTRURA");
+        }
+      });
+	});
+</script>
+	
 </body>
 </html>

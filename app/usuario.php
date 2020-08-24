@@ -1,5 +1,5 @@
 <?php
-    include 'banco.php';
+    include ("email.php");
 
     $nome = $_POST["nome"];
     $cpf = $_POST["cpf"];
@@ -19,15 +19,17 @@
     $hash = $array[0]->hash;
 
     try{
-        $conect = getConexao();
+
+        $conect = new PDO('mysql:host=database-2.c88nbyo6r5kw.us-east-1.rds.amazonaws.com;dbname=petbolsa', "site", "superpetuag1");    
+
+        $conect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
         $conect->beginTransaction();
-        $consulta = $conect->prepare("SELECT count(cpf_pessoa) as qtt FROM pessoa WHERE cpf_pessoa = ?");
-        $consulta->bindParam( 1, $cpf, PDO::PARAM_STR);
+        $consulta = $conect->prepare("SELECT count(cpf_pessoa) as qtt FROM pessoa WHERE cpf_pessoa = :cpf", array(PDO::CURSOR_SCROLL));
+        $consulta->bindParam(':cpf', $cpf, PDO::PARAM_STR);
         $consulta->execute();
 
-        echo ("foi");
 
-        $result 		= $data->fetch( PDO::FETCH_ASSOC );
+        $result 		= $consulta->fetch( PDO::FETCH_ASSOC );
         $qtt            =$result['qtt'];
 
         if(intval($qtt) !== intval("0")){
@@ -36,24 +38,26 @@
             return;
         }
 
-        $data = $conect->prepare("INSERT INTO pessoa(nome_pessoa, email_pessoa, hash_pessoa, cpf_pessoa)VALUES (?, ?, ?, ?)");
-        $data->bindParam( 1, $nome, PDO::PARAM_STR);
-        $data->bindParam( 2, $email, PDO::PARAM_STR);
-        $data->bindParam( 3, $hash, PDO::PARAM_STR);
-        $data->bindParam( 4, $cpf, PDO::PARAM_STR);
-        $data->execute();
+        $consulta = $conect->prepare("INSERT INTO pessoa(nome_pessoa, email_pessoa, hash_pessoa, cpf_pessoa)VALUES (?, ?, ?, ?)");
+        $consulta->bindParam( 1, $nome, PDO::PARAM_STR);
+        $consulta->bindParam( 2, $email, PDO::PARAM_STR);
+        $consulta->bindParam( 3, $hash, PDO::PARAM_STR);
+        $consulta->bindParam( 4, $cpf, PDO::PARAM_STR);
+        $consulta->execute();
 
-        $data->commit();
+        $conect->commit();
+        echo (enviar_email_cadastro($nome, $email, $hash, $cpf));
 
-        echo '[{"result":"True","mensagem":"Pessoa já cadastrada com sucesso.","encod":"false"}]';
+        echo '[{"result":"True","mensagem":"Pessoa cadastrada com sucesso.","encod":"false"}]';
+        
         return;
 
     } catch ( Exception $e ) {
         $conect->rollBack();
-        return '[{"result":"false","p1":"' . base64_encode( $e->getMessage() ) . '","encod":"true"}]';
+        return '[{"result":"false","mensagem":"' . base64_encode( $e->getMessage() ) . '","encod":"true"}]';
     }
     
-
+    
 
 
 
