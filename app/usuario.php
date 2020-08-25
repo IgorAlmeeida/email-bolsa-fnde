@@ -1,5 +1,12 @@
 <?php
+<<<<<<< HEAD
     include ("email.php");
+=======
+
+use function PHPSTORM_META\type;
+
+include_once "banco.php";
+>>>>>>> 490d6b965dd76d107b1487d8ed335331c9dbe1ba
 
     $nome = $_POST["nome"];
     $cpf = $_POST["cpf"];
@@ -7,6 +14,7 @@
 
     $json_file = [];
     $json_file = file_get_contents("https://www.fnde.gov.br/digef/rs/spba/publica/pessoa/1/10/".$cpf);
+<<<<<<< HEAD
 
     $obj = json_decode( $json_file);
 
@@ -60,6 +68,10 @@
     
 
 
+=======
+    
+    echo json_decode($json_file,true);
+>>>>>>> 490d6b965dd76d107b1487d8ed335331c9dbe1ba
 
 
 
