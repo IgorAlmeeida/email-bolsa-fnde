@@ -12,7 +12,7 @@ $agora = date('d/m/Y H:i');
 echo $agora;
 
 echo "\nConectando ao Banco de dados\n";
-sleep (180);
+//sleep (180);
 
 $agora = date('d/m/Y H:i');
 echo $agora;
@@ -34,10 +34,10 @@ for ($i = 0; $i < count($array_pessoas); $i++){
 
     $pagamentos = pegar_pagamentos($programas);
 
-    echo "Verificando pessoa\n";
+    echo "Verificando dados de ".$array_pessoas[$i]['nome_pessoa']."\n";
 
     if (verificar_pagamentos_banco($array_pessoas[$i]['id_pessoa'])){
-        inserir_pagamento($array_pessoas[$i]['id_pessoa'], $pagamentos[count($pagamentos)-2], true);
+        inserir_pagamento($array_pessoas[$i]['id_pessoa'], $pagamentos[count($pagamentos)-1], true);
         //echo(json_encode($pagamentos[count($pagamentos)-2]));
     }
     else{
@@ -112,7 +112,14 @@ function inserir_pagamento($id_pessoa, $pagamento, $is_enviado){
             $consulta = $conect->prepare("INSERT INTO bolsa (id_pessoa, bolsa, ordem_bancaria, valor_bolsa, is_enviado)
             VALUES(?,?,?,?,?)");
 
-            $valor = str_replace('.', '', $pagamento->valor);
+            if(strpos($pagamento->valor, "." )){
+            	$valor = str_replace('.', '', $pagamento->valor);
+            	$valor = strval($valor);
+            }
+            else {
+            	$valor = strval($pagamento->valor);
+            }
+
             $consulta->bindParam( 1, $id_pessoa,PDO::PARAM_INT);
             $consulta->bindParam( 2, $pagamento->referencia, PDO::PARAM_STR);
             $consulta->bindParam( 3, $pagamento->ordermBancaria, PDO::PARAM_STR);

@@ -1,7 +1,11 @@
-06/09/2020 09:00
+15/09/2020 18:19
 Conectando ao Banco de dados
-06/09/2020 09:03
+15/09/2020 18:19
 Conectado ao Banco de dados
 Buscando pessoas
 Realizando rotinas de busca e atualização no banco de dados
+Verificando pessoa
+Verificando pessoa
+Verificando pessoa
+Verificando pessoa
 Verificando pessoa
